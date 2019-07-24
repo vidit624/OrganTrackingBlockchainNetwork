@@ -1,0 +1,176 @@
+
+Organizations:
+    - &OrdererOrg
+            Name: OrdererMSP
+            ID: OrdererMSP
+            MSPDir: crypto-config/ordererOrganizations/carscm.net/msp
+            Policies:
+                Readers:
+                    Type: Signature
+                    Rule: "OR('OrdererMSP.member')"
+                Writers:
+                    Type: Signature
+                    Rule: "OR('OrdererMSP.member')"
+                Admins:
+                    Type: Signature
+                    Rule: "OR('OrdererMSP.admin')"
+
+    
+    - &VectorCarsOrg
+            Name: VectorCarsMSP
+            ID: VectorCarsMSP
+            MSPDir: crypto-config/peerOrganizations/vectorcars.com/msp
+            Policies:
+                Readers:
+                    Type: Signature
+                    Rule: "OR('VectorCarsMSP.admin', 'VectorCarsMSP.peer', 'VectorCarsMSP.client' )"
+                Writers:
+                    Type: Signature
+                    Rule: "OR('VectorCarsMSP.admin', 'VectorCarsMSP.client' )"
+                Admins:
+                    Type: Signature
+                    Rule: "OR('VectorCarsMSP.admin')"
+            AnchorPeers:
+              - Host: peer0.vectorcars.com
+                Port: 7051
+    
+    - &JamesDistributersOrg
+            Name: JamesDistributersMSP
+            ID: JamesDistributersMSP
+            MSPDir: crypto-config/peerOrganizations/jamesdistributers.net/msp
+            Policies:
+                Readers:
+                    Type: Signature
+                    Rule: "OR('JamesDistributersMSP.admin', 'JamesDistributersMSP.peer', 'JamesDistributersMSP.client' )"
+                Writers:
+                    Type: Signature
+                    Rule: "OR('JamesDistributersMSP.admin', 'JamesDistributersMSP.client' )"
+                Admins:
+                    Type: Signature
+                    Rule: "OR('JamesDistributersMSP.admin')"
+            AnchorPeers:
+              - Host: peer0.jamesdistributers.net
+                Port: 7051
+    
+    - &WBRTAOrg
+            Name: WBRTAMSP
+            ID: WBRTAMSP
+            MSPDir: crypto-config/peerOrganizations/wbrta.gov.in/msp
+            Policies:
+                Readers:
+                    Type: Signature
+                    Rule: "OR('WBRTAMSP.admin', 'WBRTAMSP.peer', 'WBRTAMSP.client' )"
+                Writers:
+                    Type: Signature
+                    Rule: "OR('WBRTAMSP.admin', 'WBRTAMSP.client' )"
+                Admins:
+                    Type: Signature
+                    Rule: "OR('WBRTAMSP.admin')"
+            AnchorPeers:
+              - Host: peer0.wbrta.gov.in
+                Port: 7051
+    
+
+Capabilities:
+    Channel: &ChannelCapabilities
+        V1_3: true
+    Orderer: &OrdererCapabilities
+        V1_1: true
+    Application: &ApplicationCapabilities
+        V1_3: true
+        V1_2: false
+        V1_1: false
+
+Application: &ApplicationDefaults
+    Organizations:
+
+    Policies:
+        Readers:
+            Type: ImplicitMeta
+            Rule: "ANY Readers"
+        Writers:
+            Type: ImplicitMeta
+            Rule: "ANY Writers"
+        Admins:
+            Type: ImplicitMeta
+            Rule: "MAJORITY Admins"
+
+    Capabilities:
+        <<: *ApplicationCapabilities
+
+Orderer: &OrdererDefaults
+    OrdererType: solo
+    Addresses:
+          - orderer.carscm.net:7050
+    BatchTimeout: 2s
+    BatchSize:
+        MaxMessageCount: 16
+        AbsoluteMaxBytes: 98 MB
+        PreferredMaxBytes: 1024 KB
+    Kafka:
+        Brokers:
+            - 127.0.0.1:9092
+    Organizations:
+
+    Policies:
+        Readers:
+            Type: ImplicitMeta
+            Rule: "ANY Readers"
+        Writers:
+            Type: ImplicitMeta
+            Rule: "ANY Writers"
+        Admins:
+            Type: ImplicitMeta
+            Rule: "MAJORITY Admins"
+        BlockValidation:
+            Type: ImplicitMeta
+            Rule: "ANY Writers"
+    Capabilities:
+        <<: *OrdererCapabilities
+
+Channel: &ChannelDefaults
+    Policies:
+        Readers:
+            Type: ImplicitMeta
+            Rule: "ANY Readers"
+        Writers:
+            Type: ImplicitMeta
+            Rule: "ANY Writers"
+        Admins:
+            Type: ImplicitMeta
+            Rule: "MAJORITY Admins"
+    Capabilities:
+        <<: *ChannelCapabilities
+
+Profiles:
+    OrdererGenesis:
+        <<: *ChannelDefaults
+        Orderer:
+            <<: *OrdererDefaults
+            Organizations:
+                - *OrdererOrg
+            Capabilities:
+                <<: *OrdererCapabilities 
+        Consortiums:
+            CarSCMConsortium:
+                Organizations:
+                   - *VectorCarsOrg
+                   - *JamesDistributersOrg
+                   - *WBRTAOrg
+                   
+        
+    
+    cartrackingchannel:
+        Consortium: CarSCMConsortium
+        Application:
+            <<: *ApplicationDefaults
+            Organizations:
+              - *WBRTAOrg
+              - *JamesDistributersOrg
+              - *VectorCarsOrg
+              
+            Capabilities:
+              <<: *ApplicationCapabilities
+    
+        
+

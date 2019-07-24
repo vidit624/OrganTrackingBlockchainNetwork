@@ -1,0 +1,53 @@
+{
+    "fabricVersion": "1.4.0",
+    "orderers": {
+        "name": "Orderer",
+        "mspID": "OrdererMSP",
+        "domain": "carscm.net",
+        "ordererHostname": "orderer",
+        "SANS": "localhost",
+        "type": "solo"
+    },
+    "addCA": "true",
+
+    "orgs": [{
+            "name": "VectorCars",
+            "domain": "vectorcars.com",
+            "mspID": "VectorCarsMSP",
+            "SANS": "localhost",
+            "peerCount": 1,
+            "userCount": 1
+        },
+        {
+            "name": "JamesDistributers",
+            "domain": "jamesdistributers.net",
+            "mspID": "JamesDistributersMSP",
+            "SANS": "localhost",
+            "peerCount": 1,
+            "userCount": 1
+        },
+        {
+            "name": "WBRTA",
+            "domain": "wbrta.gov.in",
+            "mspID": "WBRTAMSP",
+            "SANS": "localhost",
+            "peerCount": 1,
+            "userCount": 1
+        }
+    ],
+    "consortium": "CarSCMConsortium",
+    "channels": [{
+            "channelName": "cartrackingchannel",
+            "orgs": ["WBRTA", "JamesDistributers", "VectorCars"]
+        }
+
+    ],
+    "chaincodes": [{
+        "channelName": "cartrackingchannel",
+        "ccid": "ctrack",
+        "version": "1.0",
+        "src": "github.com/ctrack",
+        "participants": ["WBRTA", "JamesDistributers", "VectorCars"]
+    }]
+
+}

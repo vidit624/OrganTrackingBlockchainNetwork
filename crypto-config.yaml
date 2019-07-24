@@ -1,0 +1,41 @@
+OrdererOrgs:
+- Domain: carscm.net
+  Name: Orderer
+  Specs:
+  - SANS:
+    - localhost
+  - Hostname: orderer
+PeerOrgs:
+- CA:
+    Hostname: ca
+  Domain: vectorcars.com
+  EnableNodeOUs: true
+  Name: VectorCars
+  Template:
+    Count: 1
+    SANS:
+    - localhost
+  Users:
+    Count: 1
+- CA:
+    Hostname: ca
+  Domain: jamesdistributers.net
+  EnableNodeOUs: true
+  Name: JamesDistributers
+  Template:
+    Count: 1
+    SANS:
+    - localhost
+  Users:
+    Count: 1
+- CA:
+    Hostname: ca
+  Domain: wbrta.gov.in
+  EnableNodeOUs: true
+  Name: WBRTA
+  Template:
+    Count: 1
+    SANS:
+    - localhost
+  Users:
+    Count: 1

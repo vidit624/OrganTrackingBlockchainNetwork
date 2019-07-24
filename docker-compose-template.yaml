@@ -1,0 +1,246 @@
+version: "2"
+networks:
+  fabricnetwork: {}
+services:
+  ca.jamesdistributers.net:
+    container_name: ca.jamesdistributers.net
+    extends:
+      file: base.yaml
+      service: ca
+    environment:
+    - FABRIC_CA_SERVER_CA_NAME=JamesDistributersCA
+    - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.jamesdistributers.net-cert.pem
+    - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/JAMESDISTRIBUTERS_PRIVATE_KEY
+    - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.jamesdistributers.net-cert.pem
+    - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/JAMESDISTRIBUTERS_PRIVATE_KEY
+    working_dir: /opt/ws
+    volumes:
+    - ./crypto-config/peerOrganizations/jamesdistributers.net/ca/:/etc/hyperledger/fabric-ca-server-config
+    - ./:/opt/ws
+    ports:
+    - 8054:7054
+    networks:
+    - fabricnetwork
+    extra_hosts:
+    - server0.example.com:127.0.0.1
+    - server1.example.com:127.0.0.1
+    - server2.example.com:127.0.0.1
+  ca.vectorcars.com:
+    container_name: ca.vectorcars.com
+    extends:
+      file: base.yaml
+      service: ca
+    environment:
+    - FABRIC_CA_SERVER_CA_NAME=VectorCarsCA
+    - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.vectorcars.com-cert.pem
+    - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/VECTORCARS_PRIVATE_KEY
+    - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.vectorcars.com-cert.pem
+    - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/VECTORCARS_PRIVATE_KEY
+    working_dir: /opt/ws
+    volumes:
+    - ./crypto-config/peerOrganizations/vectorcars.com/ca/:/etc/hyperledger/fabric-ca-server-config
+    - ./:/opt/ws
+    ports:
+    - 7054:7054
+    networks:
+    - fabricnetwork
+    extra_hosts:
+    - server0.example.com:127.0.0.1
+    - server1.example.com:127.0.0.1
+    - server2.example.com:127.0.0.1
+  ca.wbrta.gov.in:
+    container_name: ca.wbrta.gov.in
+    extends:
+      file: base.yaml
+      service: ca
+    environment:
+    - FABRIC_CA_SERVER_CA_NAME=WBRTACA
+    - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.wbrta.gov.in-cert.pem
+    - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/WBRTA_PRIVATE_KEY
+    - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.wbrta.gov.in-cert.pem
+    - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/WBRTA_PRIVATE_KEY
+    working_dir: /opt/ws
+    volumes:
+    - ./crypto-config/peerOrganizations/wbrta.gov.in/ca/:/etc/hyperledger/fabric-ca-server-config
+    - ./:/opt/ws
+    ports:
+    - 9054:7054
+    networks:
+    - fabricnetwork
+    extra_hosts:
+    - server0.example.com:127.0.0.1
+    - server1.example.com:127.0.0.1
+    - server2.example.com:127.0.0.1
+  cli:
+    image: hyperledger/fabric-tools:${TOOLS_TAG}
+    container_name: cli
+    tty: true
+    environment:
+    - CORE_PEER_TLS_ENABLED=true
+    - GOPATH=/opt/gopath
+    - FABRIC_LOGGING_SPEC=DEBUG
+    - CORE_PEER_ID=cli
+    - GODEBUG=netdns=go
+    working_dir: /opt/ws
+    volumes:
+    - /var/run/:/host/var/run/
+    - ./:/opt/ws
+    - ./chaincode/github.com:/opt/gopath/src/github.com
+    depends_on:
+    - orderer.carscm.net
+    - peer0.vectorcars.com
+    - peer0.jamesdistributers.net
+    - peer0.wbrta.gov.in
+    networks:
+    - fabricnetwork
+    extra_hosts:
+    - server0.example.com:127.0.0.1
+    - server1.example.com:127.0.0.1
+    - server2.example.com:127.0.0.1
+  couch0:
+    container_name: couch0
+    extends:
+      file: base.yaml
+      service: couchdb
+    volumes:
+    - ./worldstate/couch0:/opt/couchdb/data
+    ports:
+    - 5984:5984
+    networks:
+    - fabricnetwork
+  couch1:
+    container_name: couch1
+    extends:
+      file: base.yaml
+      service: couchdb
+    volumes:
+    - ./worldstate/couch1:/opt/couchdb/data
+    ports:
+    - 6984:5984
+    networks:
+    - fabricnetwork
+  couch2:
+    container_name: couch2
+    extends:
+      file: base.yaml
+      service: couchdb
+    volumes:
+    - ./worldstate/couch2:/opt/couchdb/data
+    ports:
+    - 7984:5984
+    networks:
+    - fabricnetwork
+  orderer.carscm.net:
+    container_name: orderer.carscm.net
+    extends:
+      file: base.yaml
+      service: orderer
+    volumes:
+    - ./blocks/orderercarscmnet:/var/hyperledger/production/orderer
+    - ./genesis.block:/var/hyperledger/orderer/genesis.block
+    - ./crypto-config/ordererOrganizations/carscm.net/orderers/orderer.carscm.net/msp:/var/hyperledger/orderer/msp
+    - ./crypto-config/ordererOrganizations/carscm.net/orderers/orderer.carscm.net/tls/:/var/hyperledger/orderer/tls
+    ports:
+    - 7050:7050
+    networks:
+    - fabricnetwork
+    extra_hosts:
+    - server0.example.com:127.0.0.1
+    - server1.example.com:127.0.0.1
+    - server2.example.com:127.0.0.1
+  peer0.jamesdistributers.net:
+    container_name: peer0.jamesdistributers.net
+    extends:
+      file: base.yaml
+      service: peer
+    environment:
+    - CORE_PEER_ID=peer0.jamesdistributers.net
+    - CORE_PEER_ADDRESS=peer0.jamesdistributers.net:7051
+    - CORE_PEER_CHAINCODELISTENADDRESS=peer0.jamesdistributers.net:7052
+    - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.jamesdistributers.net:7051
+    - CORE_PEER_EVENTS_ADDRESS=peer0.jamesdistributers.net:7053
+    - CORE_PEER_LOCALMSPID=JamesDistributersMSP
+    - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+    - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couch1:5984
+    - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.jamesdistributers.net:7051
+    volumes:
+    - ./blocks/peer0jamesdistributersnet:/var/hyperledger/production
+    - /var/run/:/host/var/run/
+    - ./crypto-config/peerOrganizations/jamesdistributers.net/peers/peer0.jamesdistributers.net/msp:/etc/hyperledger/fabric/msp
+    - ./crypto-config/peerOrganizations/jamesdistributers.net/peers/peer0.jamesdistributers.net/tls:/etc/hyperledger/fabric/tls
+    ports:
+    - 8051:7051
+    - 8053:7053
+    depends_on:
+    - couch1
+    - orderer.carscm.net
+    networks:
+    - fabricnetwork
+    extra_hosts:
+    - server0.example.com:127.0.0.1
+    - server1.example.com:127.0.0.1
+    - server2.example.com:127.0.0.1
+  peer0.vectorcars.com:
+    container_name: peer0.vectorcars.com
+    extends:
+      file: base.yaml
+      service: peer
+    environment:
+    - CORE_PEER_ID=peer0.vectorcars.com
+    - CORE_PEER_ADDRESS=peer0.vectorcars.com:7051
+    - CORE_PEER_CHAINCODELISTENADDRESS=peer0.vectorcars.com:7052
+    - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.vectorcars.com:7051
+    - CORE_PEER_EVENTS_ADDRESS=peer0.vectorcars.com:7053
+    - CORE_PEER_LOCALMSPID=VectorCarsMSP
+    - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+    - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couch0:5984
+    - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.vectorcars.com:7051
+    volumes:
+    - ./blocks/peer0vectorcarscom:/var/hyperledger/production
+    - /var/run/:/host/var/run/
+    - ./crypto-config/peerOrganizations/vectorcars.com/peers/peer0.vectorcars.com/msp:/etc/hyperledger/fabric/msp
+    - ./crypto-config/peerOrganizations/vectorcars.com/peers/peer0.vectorcars.com/tls:/etc/hyperledger/fabric/tls
+    ports:
+    - 7051:7051
+    - 7053:7053
+    depends_on:
+    - couch0
+    - orderer.carscm.net
+    networks:
+    - fabricnetwork
+    extra_hosts:
+    - server0.example.com:127.0.0.1
+    - server1.example.com:127.0.0.1
+    - server2.example.com:127.0.0.1
+  peer0.wbrta.gov.in:
+    container_name: peer0.wbrta.gov.in
+    extends:
+      file: base.yaml
+      service: peer
+    environment:
+    - CORE_PEER_ID=peer0.wbrta.gov.in
+    - CORE_PEER_ADDRESS=peer0.wbrta.gov.in:7051
+    - CORE_PEER_CHAINCODELISTENADDRESS=peer0.wbrta.gov.in:7052
+    - CORE_PEER_GOSSIP_EXTERNALENDPOINT=peer0.wbrta.gov.in:7051
+    - CORE_PEER_EVENTS_ADDRESS=peer0.wbrta.gov.in:7053
+    - CORE_PEER_LOCALMSPID=WBRTAMSP
+    - CORE_LEDGER_STATE_STATEDATABASE=CouchDB
+    - CORE_LEDGER_STATE_COUCHDBCONFIG_COUCHDBADDRESS=couch2:5984
+    - CORE_PEER_GOSSIP_BOOTSTRAP=peer0.wbrta.gov.in:7051
+    volumes:
+    - ./blocks/peer0wbrtagovin:/var/hyperledger/production
+    - /var/run/:/host/var/run/
+    - ./crypto-config/peerOrganizations/wbrta.gov.in/peers/peer0.wbrta.gov.in/msp:/etc/hyperledger/fabric/msp
+    - ./crypto-config/peerOrganizations/wbrta.gov.in/peers/peer0.wbrta.gov.in/tls:/etc/hyperledger/fabric/tls
+    ports:
+    - 9051:7051
+    - 9053:7053
+    depends_on:
+    - couch2
+    - orderer.carscm.net
+    networks:
+    - fabricnetwork
+    extra_hosts:
+    - server0.example.com:127.0.0.1
+    - server1.example.com:127.0.0.1
+    - server2.example.com:127.0.0.1
