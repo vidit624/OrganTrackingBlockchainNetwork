@@ -1,3 +1,7 @@
 *.tx
 bin/
+blocks/
+worldstate/
+*.block
+crypto-config/
 
