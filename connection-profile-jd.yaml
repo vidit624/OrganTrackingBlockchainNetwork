@@ -159,16 +159,16 @@ certificateAuthorities:
 entityMatchers:
   peer:
     - pattern: peer0.jamesdistributers.net
-      urlSubstitutionExp: localhost:8051
-      eventUrlSubstitutionExp: localhost:8053
-      sslTargetOverrideUrlSubstitutionExp: localhost
+      urlSubstitutionExp: peer0.jamesdistributers.net:8051
+      eventUrlSubstitutionExp: peer0.jamesdistributers.net:8053
+      sslTargetOverrideUrlSubstitutionExp: peer0.jamesdistributers.net
       mappedHost: peer0.jamesdistributers.net
     
   orderer:
     - pattern: orderer.carscm.net
-      urlSubstitutionExp: localhost:8050
-      eventUrlSubstitutionExp: localhost:8050
-      sslTargetOverrideUrlSubstitutionExp: localhost
+      urlSubstitutionExp: orderer.carscm.net:8050
+      eventUrlSubstitutionExp: orderer.carscm.net:8050
+      sslTargetOverrideUrlSubstitutionExp: orderer.carscm.net
       mappedHost: orderer.carscm.net
       
   certificateAuthority:

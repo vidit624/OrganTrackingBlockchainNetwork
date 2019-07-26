@@ -159,16 +159,16 @@ certificateAuthorities:
 entityMatchers:
   peer:
     - pattern: peer0.wbrta.gov.in
-      urlSubstitutionExp: localhost:9051
-      eventUrlSubstitutionExp: localhost:9053
-      sslTargetOverrideUrlSubstitutionExp: localhost
+      urlSubstitutionExp: peer0.wbrta.gov.in:9051
+      eventUrlSubstitutionExp: peer0.wbrta.gov.in:9053
+      sslTargetOverrideUrlSubstitutionExp: peer0.wbrta.gov.in
       mappedHost: peer0.wbrta.gov.in
     
   orderer:
     - pattern: orderer.carscm.net
-      urlSubstitutionExp: localhost:9050
-      eventUrlSubstitutionExp: localhost:9050
-      sslTargetOverrideUrlSubstitutionExp: localhost
+      urlSubstitutionExp: orderer.carscm.net:9050
+      eventUrlSubstitutionExp: orderer.carscm.net:9050
+      sslTargetOverrideUrlSubstitutionExp: orderer.carscm.net
       mappedHost: orderer.carscm.net
       
   certificateAuthority:

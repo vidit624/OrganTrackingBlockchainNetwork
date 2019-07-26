@@ -159,16 +159,16 @@ certificateAuthorities:
 entityMatchers:
   peer:
     - pattern: peer0.vectorcars.com
-      urlSubstitutionExp: localhost:7051
-      eventUrlSubstitutionExp: localhost:7053
-      sslTargetOverrideUrlSubstitutionExp: localhost
+      urlSubstitutionExp: peer0.vectorcars.com:7051
+      eventUrlSubstitutionExp: peer0.vectorcars.com:7053
+      sslTargetOverrideUrlSubstitutionExp: peer0.vectorcars.com
       mappedHost: peer0.vectorcars.com
     
   orderer:
     - pattern: orderer.carscm.net
-      urlSubstitutionExp: localhost:7050
-      eventUrlSubstitutionExp: localhost:7050
-      sslTargetOverrideUrlSubstitutionExp: localhost
+      urlSubstitutionExp: orderer.carscm.net:7050
+      eventUrlSubstitutionExp: orderer.carscm.net:7050
+      sslTargetOverrideUrlSubstitutionExp: orderer.carscm.net
       mappedHost: orderer.carscm.net
       
   certificateAuthority:
