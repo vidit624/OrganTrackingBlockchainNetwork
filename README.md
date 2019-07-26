@@ -54,7 +54,13 @@ First time setup. Run the following commands
   mkdir -p chaincode/github.com/ctrack 
 ```
 
- 4. Copy the chain code files in the chaincode/github.com/ctrack ( Separate instructions will given for this step) 
+ 4. Copy the chain code files in the chaincode/github.com/ctrack ( Assumption : chaincode is avalable under $GOPATH/src/github.com/blockchain)
+ 
+ ```sh
+./copycc.sh
+
+ ```
+
 
  5. Start the netowrk  
 
