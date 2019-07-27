@@ -10,9 +10,9 @@ services:
     environment:
     - FABRIC_CA_SERVER_CA_NAME=JamesDistributersCA
     - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.jamesdistributers.net-cert.pem
-    - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/3d21ef4ae00c8192ba6b913a8debd7a08ba5b3a0218c7896722c14cfce484a34_sk
+    - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/d559a88866593c1c4227f61d82e14baad36cf0703425ca24aaf8600455a3d78a_sk
     - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.jamesdistributers.net-cert.pem
-    - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/3d21ef4ae00c8192ba6b913a8debd7a08ba5b3a0218c7896722c14cfce484a34_sk
+    - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/d559a88866593c1c4227f61d82e14baad36cf0703425ca24aaf8600455a3d78a_sk
     working_dir: /opt/ws
     volumes:
     - ./crypto-config/peerOrganizations/jamesdistributers.net/ca/:/etc/hyperledger/fabric-ca-server-config
@@ -33,9 +33,9 @@ services:
     environment:
     - FABRIC_CA_SERVER_CA_NAME=VectorCarsCA
     - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.vectorcars.com-cert.pem
-    - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/a392935abfb2248a3301b5e5529ecf4b616692c537278b05e43df3b0cffca082_sk
+    - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/772ef970053fb51a8fba8287e272c77c31cd4d51f9834404c949f51e67ff3c6f_sk
     - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.vectorcars.com-cert.pem
-    - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/a392935abfb2248a3301b5e5529ecf4b616692c537278b05e43df3b0cffca082_sk
+    - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/772ef970053fb51a8fba8287e272c77c31cd4d51f9834404c949f51e67ff3c6f_sk
     working_dir: /opt/ws
     volumes:
     - ./crypto-config/peerOrganizations/vectorcars.com/ca/:/etc/hyperledger/fabric-ca-server-config
@@ -56,9 +56,9 @@ services:
     environment:
     - FABRIC_CA_SERVER_CA_NAME=WBRTACA
     - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.wbrta.gov.in-cert.pem
-    - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/f6a509647fc62bd10df36cf210fa3bf9dcb3fd8d679bb25d07f0f37e61021f86_sk
+    - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/164c7644419a54f9043413935beec3d3402ef34425339f6021224f9ce78ad01f_sk
     - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.wbrta.gov.in-cert.pem
-    - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/f6a509647fc62bd10df36cf210fa3bf9dcb3fd8d679bb25d07f0f37e61021f86_sk
+    - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/164c7644419a54f9043413935beec3d3402ef34425339f6021224f9ce78ad01f_sk
     working_dir: /opt/ws
     volumes:
     - ./crypto-config/peerOrganizations/wbrta.gov.in/ca/:/etc/hyperledger/fabric-ca-server-config

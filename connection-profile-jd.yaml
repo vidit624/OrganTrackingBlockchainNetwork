@@ -37,9 +37,9 @@ client:
     path: /home/blockchain/projects/cartrack/network/crypto-config
 
   credentialStore:
-    path: "./tmp/state-store"
+    path: "./tmpjd/state-store"
     cryptoStore:
-      path: ./tmp/msp
+      path: ./tmpjd/msp
 
    # BCCSP config for the client. Used by GO SDK.
   BCCSP:
@@ -166,8 +166,8 @@ entityMatchers:
     
   orderer:
     - pattern: orderer.carscm.net
-      urlSubstitutionExp: orderer.carscm.net:8050
-      eventUrlSubstitutionExp: orderer.carscm.net:8050
+      urlSubstitutionExp: orderer.carscm.net:7050
+      eventUrlSubstitutionExp: orderer.carscm.net:7050
       sslTargetOverrideUrlSubstitutionExp: orderer.carscm.net
       mappedHost: orderer.carscm.net
       
