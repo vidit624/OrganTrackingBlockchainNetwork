@@ -10,9 +10,9 @@ services:
     environment:
     - FABRIC_CA_SERVER_CA_NAME=JamesDistributersCA
     - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.jamesdistributers.net-cert.pem
-    - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/d559a88866593c1c4227f61d82e14baad36cf0703425ca24aaf8600455a3d78a_sk
+    - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/769b0d9f7b7b3395ae5a23a1c54fdc2e0c10e836ad8eba6490b828b4d4b21556_sk
     - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.jamesdistributers.net-cert.pem
-    - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/d559a88866593c1c4227f61d82e14baad36cf0703425ca24aaf8600455a3d78a_sk
+    - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/769b0d9f7b7b3395ae5a23a1c54fdc2e0c10e836ad8eba6490b828b4d4b21556_sk
     working_dir: /opt/ws
     volumes:
     - ./crypto-config/peerOrganizations/jamesdistributers.net/ca/:/etc/hyperledger/fabric-ca-server-config
@@ -22,9 +22,7 @@ services:
     networks:
     - fabricnetwork
     extra_hosts:
-    - server0.example.com:127.0.0.1
-    - server1.example.com:127.0.0.1
-    - server2.example.com:127.0.0.1
+    - myhost:127.0.0.1
   ca.vectorcars.com:
     container_name: ca.vectorcars.com
     extends:
@@ -33,9 +31,9 @@ services:
     environment:
     - FABRIC_CA_SERVER_CA_NAME=VectorCarsCA
     - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.vectorcars.com-cert.pem
-    - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/772ef970053fb51a8fba8287e272c77c31cd4d51f9834404c949f51e67ff3c6f_sk
+    - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/df0313a181a89db6c1b12aa1b0e6a66bf8f338d9cb7dee4880b8f6f4f55cb8f0_sk
     - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.vectorcars.com-cert.pem
-    - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/772ef970053fb51a8fba8287e272c77c31cd4d51f9834404c949f51e67ff3c6f_sk
+    - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/df0313a181a89db6c1b12aa1b0e6a66bf8f338d9cb7dee4880b8f6f4f55cb8f0_sk
     working_dir: /opt/ws
     volumes:
     - ./crypto-config/peerOrganizations/vectorcars.com/ca/:/etc/hyperledger/fabric-ca-server-config
@@ -45,9 +43,7 @@ services:
     networks:
     - fabricnetwork
     extra_hosts:
-    - server0.example.com:127.0.0.1
-    - server1.example.com:127.0.0.1
-    - server2.example.com:127.0.0.1
+    - myhost:127.0.0.1
   ca.wbrta.gov.in:
     container_name: ca.wbrta.gov.in
     extends:
@@ -56,9 +52,9 @@ services:
     environment:
     - FABRIC_CA_SERVER_CA_NAME=WBRTACA
     - FABRIC_CA_SERVER_CA_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.wbrta.gov.in-cert.pem
-    - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/164c7644419a54f9043413935beec3d3402ef34425339f6021224f9ce78ad01f_sk
+    - FABRIC_CA_SERVER_CA_KEYFILE=/etc/hyperledger/fabric-ca-server-config/457fbdb5c9f083f3475ed6c6ef0f980cc4ab59bb88a291ae3d8243a90d6a0c33_sk
     - FABRIC_CA_SERVER_TLS_CERTFILE=/etc/hyperledger/fabric-ca-server-config/ca.wbrta.gov.in-cert.pem
-    - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/164c7644419a54f9043413935beec3d3402ef34425339f6021224f9ce78ad01f_sk
+    - FABRIC_CA_SERVER_TLS_KEYFILE=/etc/hyperledger/fabric-ca-server-config/457fbdb5c9f083f3475ed6c6ef0f980cc4ab59bb88a291ae3d8243a90d6a0c33_sk
     working_dir: /opt/ws
     volumes:
     - ./crypto-config/peerOrganizations/wbrta.gov.in/ca/:/etc/hyperledger/fabric-ca-server-config
@@ -68,9 +64,7 @@ services:
     networks:
     - fabricnetwork
     extra_hosts:
-    - server0.example.com:127.0.0.1
-    - server1.example.com:127.0.0.1
-    - server2.example.com:127.0.0.1
+    - myhost:127.0.0.1
   cli:
     image: hyperledger/fabric-tools:${TOOLS_TAG}
     container_name: cli
@@ -94,9 +88,7 @@ services:
     networks:
     - fabricnetwork
     extra_hosts:
-    - server0.example.com:127.0.0.1
-    - server1.example.com:127.0.0.1
-    - server2.example.com:127.0.0.1
+    - myhost:127.0.0.1
   couch0:
     container_name: couch0
     extends:
@@ -105,7 +97,7 @@ services:
     volumes:
     - ./worldstate/couch0:/opt/couchdb/data
     ports:
-    - 5984:5984
+    - 6984:6984
     networks:
     - fabricnetwork
   couch1:
@@ -116,7 +108,7 @@ services:
     volumes:
     - ./worldstate/couch1:/opt/couchdb/data
     ports:
-    - 6984:5984
+    - 7984:6984
     networks:
     - fabricnetwork
   couch2:
@@ -127,7 +119,7 @@ services:
     volumes:
     - ./worldstate/couch2:/opt/couchdb/data
     ports:
-    - 7984:5984
+    - 8984:7984
     networks:
     - fabricnetwork
   orderer.carscm.net:
@@ -145,9 +137,7 @@ services:
     networks:
     - fabricnetwork
     extra_hosts:
-    - server0.example.com:127.0.0.1
-    - server1.example.com:127.0.0.1
-    - server2.example.com:127.0.0.1
+    - myhost:127.0.0.1
   peer0.jamesdistributers.net:
     container_name: peer0.jamesdistributers.net
     extends:
@@ -177,9 +167,7 @@ services:
     networks:
     - fabricnetwork
     extra_hosts:
-    - server0.example.com:127.0.0.1
-    - server1.example.com:127.0.0.1
-    - server2.example.com:127.0.0.1
+    - myhost:127.0.0.1
   peer0.vectorcars.com:
     container_name: peer0.vectorcars.com
     extends:
@@ -209,9 +197,7 @@ services:
     networks:
     - fabricnetwork
     extra_hosts:
-    - server0.example.com:127.0.0.1
-    - server1.example.com:127.0.0.1
-    - server2.example.com:127.0.0.1
+    - myhost:127.0.0.1
   peer0.wbrta.gov.in:
     container_name: peer0.wbrta.gov.in
     extends:
@@ -241,6 +227,4 @@ services:
     networks:
     - fabricnetwork
     extra_hosts:
-    - server0.example.com:127.0.0.1
-    - server1.example.com:127.0.0.1
-    - server2.example.com:127.0.0.1
+    - myhost:127.0.0.1

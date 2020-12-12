@@ -22,9 +22,7 @@ services:
     networks:
     - fabricnetwork
     extra_hosts:
-    - server0.example.com:127.0.0.1
-    - server1.example.com:127.0.0.1
-    - server2.example.com:127.0.0.1
+    - myhost:127.0.0.1
   ca.vectorcars.com:
     container_name: ca.vectorcars.com
     extends:
@@ -45,9 +43,7 @@ services:
     networks:
     - fabricnetwork
     extra_hosts:
-    - server0.example.com:127.0.0.1
-    - server1.example.com:127.0.0.1
-    - server2.example.com:127.0.0.1
+    - myhost:127.0.0.1
   ca.wbrta.gov.in:
     container_name: ca.wbrta.gov.in
     extends:
@@ -68,9 +64,7 @@ services:
     networks:
     - fabricnetwork
     extra_hosts:
-    - server0.example.com:127.0.0.1
-    - server1.example.com:127.0.0.1
-    - server2.example.com:127.0.0.1
+    - myhost:127.0.0.1
   cli:
     image: hyperledger/fabric-tools:${TOOLS_TAG}
     container_name: cli
@@ -94,9 +88,7 @@ services:
     networks:
     - fabricnetwork
     extra_hosts:
-    - server0.example.com:127.0.0.1
-    - server1.example.com:127.0.0.1
-    - server2.example.com:127.0.0.1
+    - myhost:127.0.0.1
   couch0:
     container_name: couch0
     extends:
@@ -145,9 +137,7 @@ services:
     networks:
     - fabricnetwork
     extra_hosts:
-    - server0.example.com:127.0.0.1
-    - server1.example.com:127.0.0.1
-    - server2.example.com:127.0.0.1
+    - myhost:127.0.0.1
   peer0.jamesdistributers.net:
     container_name: peer0.jamesdistributers.net
     extends:
@@ -177,9 +167,7 @@ services:
     networks:
     - fabricnetwork
     extra_hosts:
-    - server0.example.com:127.0.0.1
-    - server1.example.com:127.0.0.1
-    - server2.example.com:127.0.0.1
+    - myhost:127.0.0.1
   peer0.vectorcars.com:
     container_name: peer0.vectorcars.com
     extends:
@@ -209,9 +197,7 @@ services:
     networks:
     - fabricnetwork
     extra_hosts:
-    - server0.example.com:127.0.0.1
-    - server1.example.com:127.0.0.1
-    - server2.example.com:127.0.0.1
+    - myhost:127.0.0.1
   peer0.wbrta.gov.in:
     container_name: peer0.wbrta.gov.in
     extends:
@@ -241,6 +227,4 @@ services:
     networks:
     - fabricnetwork
     extra_hosts:
-    - server0.example.com:127.0.0.1
-    - server1.example.com:127.0.0.1
-    - server2.example.com:127.0.0.1
+    - myhost:127.0.0.1

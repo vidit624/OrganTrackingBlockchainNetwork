@@ -34,7 +34,7 @@ client:
 
   # Root of the MSP directories with keys and certs.
   cryptoconfig:
-    path: /home/blockchain/projects/cartrack/network/crypto-config
+    path: /home/vidit/projects/organtrack/network/crypto-config
 
   credentialStore:
     path: "./tmpwrta/state-store"
@@ -127,7 +127,7 @@ orderers:
 
     tlsCACerts:
       # Certificate location absolute path
-      path: /home/blockchain/projects/cartrack/network/crypto-config/ordererOrganizations/carscm.net/tlsca/tlsca.carscm.net-cert.pem
+      path: /home/vidit/projects/organtrack/network/crypto-config/ordererOrganizations/carscm.net/tlsca/tlsca.carscm.net-cert.pem
 
 peers:
    peer0.wbrta.gov.in:
@@ -142,7 +142,7 @@ peers:
 
     tlsCACerts:
       # Certificate location  absolute path
-      path:  /home/blockchain/projects/cartrack/network/crypto-config/peerOrganizations/wbrta.gov.in/tlsca/tlsca.wbrta.gov.in-cert.pem
+      path:  /home/vidit/projects/organtrack/network/crypto-config/peerOrganizations/wbrta.gov.in/tlsca/tlsca.wbrta.gov.in-cert.pem
   
 certificateAuthorities:
   wbrta-ca:
@@ -150,7 +150,7 @@ certificateAuthorities:
     httpsOptions:
       verify: false
     tlsCACerts: 
-      path:  /home/blockchain/projects/cartrack/network/crypto-config/peerOrganizations/wbrta.gov.in/ca/ca.wbrta.gov.in-cert.pem
+      path:  /home/vidit/projects/organtrack/network/crypto-config/peerOrganizations/wbrta.gov.in/ca/ca.wbrta.gov.in-cert.pem
     caName: WBRTACA
     registrar:
       enrollId: admin
