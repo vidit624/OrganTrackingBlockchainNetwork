@@ -17,21 +17,18 @@ var _MainLogger = shim.NewLogger("CarTrackLogger")
 type SmartContract struct {
 }
 
-//CarDetails represents the car record to be stored in ledger
-type CarDetails struct {
-	ObjType       string `json:"objType"`
-	ChasisNumber  string `json:"chasisNumber"`
-	Manufacturer  string `json:"manufacturer"`
-	Year          string `json:"makeYear"`
-	Model         string `json:"model"`
-	Color         string `json:"color"`
-	LicenseNunber string `json:"licNumber"`
-	Status        string `json:"status"`
-	Dealer        string `json:"dealer"`
-	OwnerName     string `json:"owner"`
-	UpdateTs      string `json:"ts"`
-	TrxnID        string `json:"trxnId"`
-	UpdateBy      string `json:"updBy"`
+//OrganDetails represents the car record to be stored in ledger
+type OrganDetails struct {
+	OrganType  string `json:"organType"`
+	OrganID    string `json:"organID"`
+	Year       string `json:"donationYear"`
+	BloodGroup string `json:"bloodgroup"`
+	Status     string `json:"status"`
+	// Dealer      string `json:"dealer"`
+	// OwnerName string `json:"owner"`
+	UpdateTs string `json:"ts"`
+	TrxnID   string `json:"trxnId"`
+	UpdateBy string `json:"updBy"`
 }
 
 // Init initializes chaincode.
@@ -52,53 +49,47 @@ func (sc *SmartContract) probe(stub shim.ChaincodeStubInterface) pb.Response {
 	return shim.Success([]byte(output))
 }
 
-func (sc *SmartContract) createCarEntry(stub shim.ChaincodeStubInterface) pb.Response {
-	if sc.getOrganizationRole(stub) != "CARMAKER" {
-		_MainLogger.Errorf("Trxn not allowed ")
-		return shim.Error("Trxn not allowed ")
-	}
+func (sc *SmartContract) createOrganEntry(stub shim.ChaincodeStubInterface) pb.Response {
 	_, args := stub.GetFunctionAndParameters()
 	if len(args) < 1 {
 		_MainLogger.Errorf("Invalid number of arguments")
 		return shim.Error("Invalid number of arguments")
 	}
-	var carDetails CarDetails
-	if err := json.Unmarshal([]byte(args[0]), &carDetails); err != nil {
-		_MainLogger.Errorf("Unable to parse the input car details JSON %v", err)
-		return shim.Error("Unable to parse the input car details JSON")
+	var organDetails OrganDetails
+	if err := json.Unmarshal([]byte(args[0]), &organDetails); err != nil {
+		_MainLogger.Errorf("Unable to parse the input organ details JSON %v", err)
+		return shim.Error("Unable to parse the input organ details JSON")
 	}
 	idOk, manuf := sc.getInvokerIdentity(stub)
 	if !idOk {
 		return shim.Error("Unable to retrive the invoker ID")
 	}
-	if strings.TrimSpace(carDetails.ChasisNumber) == "" {
-		_MainLogger.Error("No chasis number provided")
-		return shim.Error("No chasis number provided")
+	if strings.TrimSpace(organDetails.OrganID) == "" {
+		_MainLogger.Error("No Organ ID provided")
+		return shim.Error("No Organ ID provided")
 	}
-	carDetails.Manufacturer = manuf
-	carDetails.ObjType = "car"
-	carDetails.UpdateBy = manuf
-	carDetails.Status = "NEW"
-	carDetails.TrxnID = stub.GetTxID()
-	carDetails.UpdateTs = sc.getTrxnTS(stub)
-	jsonBytesToStore, _ := json.Marshal(carDetails)
+	organDetails.UpdateBy = manuf
+	organDetails.Status = "Available"
+	organDetails.TrxnID = stub.GetTxID()
+	organDetails.UpdateTs = sc.getTrxnTS(stub)
+	jsonBytesToStore, _ := json.Marshal(organDetails)
 	//TODO: Check the chasis number
-	if err := stub.PutState(carDetails.ChasisNumber, jsonBytesToStore); err != nil {
-		_MainLogger.Errorf("Unable to store the car details %v", err)
-		return shim.Error("Unable to store the car details ")
+	if err := stub.PutState(organDetails.OrganID, jsonBytesToStore); err != nil {
+		_MainLogger.Errorf("Unable to store the Organ Deatils %v", err)
+		return shim.Error("Unable to store the Organ Details")
 	}
 
 	return shim.Success([]byte(jsonBytesToStore))
 }
 
-func (sc *SmartContract) modifyCarEntity(stub shim.ChaincodeStubInterface) pb.Response {
+func (sc *SmartContract) modifyOrganEntity(stub shim.ChaincodeStubInterface) pb.Response {
 	_, args := stub.GetFunctionAndParameters()
 	if len(args) < 1 {
 		_MainLogger.Errorf("Invalid number of arguments")
 		return shim.Error("Invalid number of arguments")
 	}
-	var carDetails CarDetails
-	if err := json.Unmarshal([]byte(args[0]), &carDetails); err != nil {
+	var organDetails OrganDetails
+	if err := json.Unmarshal([]byte(args[0]), &organDetails); err != nil {
 		_MainLogger.Errorf("Unable to parse the input car details JSON %v", err)
 		return shim.Error("Unable to parse the input car details JSON")
 	}
@@ -106,41 +97,38 @@ func (sc *SmartContract) modifyCarEntity(stub shim.ChaincodeStubInterface) pb.Re
 	if !idOk {
 		return shim.Error("Unable to retrive the invoker ID")
 	}
-	if strings.TrimSpace(carDetails.ChasisNumber) == "" {
-		_MainLogger.Error("No chasis number provided")
-		return shim.Error("No chasis number provided")
+	if strings.TrimSpace(organDetails.OrganID) == "" {
+		_MainLogger.Error("No Organ ID provided")
+		return shim.Error("No Organ ID provided")
 	}
-	var existingEntity CarDetails
-	recordBytes, err := stub.GetState(carDetails.ChasisNumber)
+	var existingEntity OrganDetails
+	recordBytes, err := stub.GetState(organDetails.OrganID)
 	if err != nil {
-		_MainLogger.Error("Invalid chasis number provided")
-		return shim.Error("Invalid chasis number provided")
+		_MainLogger.Error("Invalid Organ ID provided")
+		return shim.Error("Invalid Organ ID provided")
 	}
 	if err := json.Unmarshal([]byte(recordBytes), &existingEntity); err != nil {
-		_MainLogger.Errorf("Unable to parse the existing car details JSON %v", err)
-		return shim.Error("Unable to parse the existing car details JSON")
+		_MainLogger.Errorf("Unable to parse the existing organ details JSON %v", err)
+		return shim.Error("Unable to parse the existing organ details JSON")
 	}
 	existingEntity.UpdateBy = who
 	existingEntity.TrxnID = stub.GetTxID()
 	existingEntity.UpdateTs = sc.getTrxnTS(stub)
 	//TODO: Checks on the status change
-	if len(strings.TrimSpace(carDetails.Status)) > 0 {
-		existingEntity.Status = carDetails.Status
+	if len(strings.TrimSpace(organDetails.Status)) > 0 {
+		existingEntity.Status = organDetails.Status
 	}
-	if len(existingEntity.Dealer) == 0 && len(strings.TrimSpace(carDetails.Dealer)) > 0 {
-		existingEntity.Dealer = carDetails.Dealer
-	}
-	if len(strings.TrimSpace(carDetails.OwnerName)) > 0 {
-		existingEntity.OwnerName = carDetails.OwnerName
-	}
-	if len(strings.TrimSpace(carDetails.LicenseNunber)) > 0 {
-		existingEntity.LicenseNunber = carDetails.LicenseNunber
-	}
+	// if len(existingEntity.Dealer) == 0 && len(strings.TrimSpace(organDetails.Dealer)) > 0 {
+	// 	existingEntity.Dealer = organDetails.Dealer
+	// }
+	// if len(strings.TrimSpace(organDetails.OwnerName)) > 0 {
+	// 	existingEntity.OwnerName = organDetails.OwnerName
+	// }
 	jsonBytesToStore, _ := json.Marshal(existingEntity)
 	//TODO: Check the chasis number
-	if err := stub.PutState(carDetails.ChasisNumber, jsonBytesToStore); err != nil {
-		_MainLogger.Errorf("Unable to store the car details %v", err)
-		return shim.Error("Unable to store the car details ")
+	if err := stub.PutState(organDetails.OrganID, jsonBytesToStore); err != nil {
+		_MainLogger.Errorf("Unable to store the organ details %v", err)
+		return shim.Error("Unable to store the irgan details ")
 	}
 
 	return shim.Success([]byte(jsonBytesToStore))
@@ -160,7 +148,7 @@ func (sc *SmartContract) registerOrg(stub shim.ChaincodeStubInterface) pb.Respon
 	stub.PutState(key, []byte(participantRole))
 	return shim.Success([]byte("Organization registered"))
 }
-func (sc *SmartContract) queryCar(stub shim.ChaincodeStubInterface) pb.Response {
+func (sc *SmartContract) queryOrgan(stub shim.ChaincodeStubInterface) pb.Response {
 	_, args := stub.GetFunctionAndParameters()
 	if len(args) < 1 {
 		return shim.Error("Invalid number of arguments")
@@ -171,10 +159,9 @@ func (sc *SmartContract) queryCar(stub shim.ChaincodeStubInterface) pb.Response 
 		return shim.Success(nil)
 
 	}
-
 	return shim.Success(data)
 }
-func (sc *SmartContract) queryCarHistory(stub shim.ChaincodeStubInterface) pb.Response {
+func (sc *SmartContract) queryOrganHistory(stub shim.ChaincodeStubInterface) pb.Response {
 	_, args := stub.GetFunctionAndParameters()
 	if len(args) < 1 {
 		return shim.Error("Invalid number of arguments")
@@ -205,14 +192,14 @@ func (sc *SmartContract) Invoke(stub shim.ChaincodeStubInterface) pb.Response {
 	switch action {
 	case "probe":
 		response = sc.probe(stub)
-	case "createCarDetails":
-		response = sc.createCarEntry(stub)
-	case "modifyCarDetails":
-		response = sc.modifyCarEntity(stub)
-	case "queryCar":
-		response = sc.queryCar(stub)
+	case "createOrganDetails":
+		response = sc.createOrganEntry(stub)
+	case "modifyOrganDetails":
+		response = sc.modifyOrganEntity(stub)
+	case "queryOrgan":
+		response = sc.queryOrgan(stub)
 	case "queryHistory":
-		response = sc.queryCarHistory(stub)
+		response = sc.queryOrganHistory(stub)
 	case "registerOrg":
 		response = sc.registerOrg(stub)
 	default:
